@@ -77,39 +77,6 @@ class BorsdataClient:
     def get_stock_prices_last(self) -> Dict[str, Any]:
         return self._get("instruments/stockprices/last")
 
-    def get_pe_ratio(self, inst_id: int) -> float:
-        kpi_id = 2  # P/E ratio KPI ID
-        data = self.get_kpi_history(inst_id, kpi_id, "year", "mean")
-        if data['values']:
-            return data['values'][0]['v']
-        return None
-
-    def get_pe_average(self, inst_id: int, years: int) -> float:
-        kpi_id = 2  # P/E ratio KPI ID
-        data = self.get_kpi_history(inst_id, kpi_id, "year", "mean")
-        values = [v['v'] for v in data['values'][:years] if v['v'] is not None]
-        return sum(values) / len(values) if values else None
-
-    def compare_pe_ratios(self, inst_id: int) -> Tuple[float, float, float]:
-        current_pe = self.get_pe_ratio(inst_id)
-        avg_3year = self.get_pe_average(inst_id, 3)
-        avg_5year = self.get_pe_average(inst_id, 5)
-        return current_pe, avg_3year, avg_5year
-
-    def print_pe_comparison(self, inst_id: int):
-        current_pe, avg_3year, avg_5year = self.compare_pe_ratios(inst_id)
-        instrument_name = next((i['name'] for i in self.get_instruments().get('instruments', []) if i['insId'] == inst_id), "Unknown")
-        
-        print(f"\nP/E Ratio Comparison for {instrument_name} (ID: {inst_id}):")
-        print(f"Current P/E: {current_pe:.2f}" if current_pe else "Current P/E: N/A")
-        print(f"3-Year Average P/E: {avg_3year:.2f}" if avg_3year else "3-Year Average P/E: N/A")
-        print(f"5-Year Average P/E: {avg_5year:.2f}" if avg_5year else "5-Year Average P/E: N/A")
-        
-        if current_pe and avg_3year and avg_5year:
-            print("\nComparison:")
-            print(f"vs 3-Year Avg: {((current_pe - avg_3year) / avg_3year * 100):.2f}%")
-            print(f"vs 5-Year Avg: {((current_pe - avg_5year) / avg_5year * 100):.2f}%")
-
     # Add more methods for other endpoints as needed
 
 # Example usage

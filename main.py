@@ -1,6 +1,8 @@
 from datetime import datetime, timedelta
 
 from borsdata_client import BorsdataClient
+import pe_analysis
+import gross_margin_analysis
 
 def print_section(title):
     print(f"\n{'=' * 50}")
@@ -38,10 +40,14 @@ def main():
         print(f"Date: {price['d']}, Close: {price['c']}, Volume: {price['v']}")
     print(f"Total price points: {len(stock_prices.get('stockPricesList', []))}")
 
-    # P/E Ratio Comparison
-    print_section("P/E Ratio Comparison")
+    # P/E Ratio Comparison and Growth Rate Plot
+    print_section("P/E Ratio Comparison and Growth Rate Analysis")
     inst_id = 3  # Example instrument ID (you can change this)
-    client.print_pe_comparison(inst_id)
+    pe_analysis.print_pe_comparison(client, inst_id)
+
+    # Gross Margin Comparison
+    print_section("Gross Margin Comparison")
+    gross_margin_analysis.print_gross_margin_comparison(client, inst_id)
 
 if __name__ == "__main__":
     main()
