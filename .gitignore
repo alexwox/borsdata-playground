@@ -1,2 +1,11 @@
-# Environment variables
+# Ignore macOS system files
+.DS_Store
+
+# Ignore Python bytecode cache
+__pycache__/
+
+# Ignore any other system or temporary files that are not necessary
+*.py[cod]
+
+# Ignore environment variables
 .env
