@@ -52,6 +52,19 @@ def plot_pe_growth_relationship(current_pe: float, stock_name: str):
 
     plt.show()
 
+def plot_pe_comparison(client, inst_id, ax):
+    # Fetch the data (you may need to adjust this based on your actual implementation)
+    pe_data = client.get_kpi_history(inst_id, kpi_id=2, report_type='year', price_type='mean')
+    
+    years = [item['y'] for item in pe_data['values']]
+    pe_values = [item['v'] for item in pe_data['values']]
+    
+    ax.plot(years, pe_values, marker='o')
+    ax.set_title('P/E Ratio Over Time')
+    ax.set_xlabel('Year')
+    ax.set_ylabel('P/E Ratio')
+    ax.grid(True)
+
 def print_pe_comparison(client: BorsdataClient, inst_id: int):
     current_pe, avg_3year, avg_5year = compare_pe_ratios(client, inst_id)
     instrument_name = next((i['name'] for i in client.get_instruments().get('instruments', []) if i['insId'] == inst_id), "Unknown")

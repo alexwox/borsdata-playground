@@ -1,4 +1,5 @@
 from borsdata_client import BorsdataClient
+import matplotlib.pyplot as plt
 
 def get_gross_margin(client: BorsdataClient, inst_id: int) -> float:
     kpi_id = 28  # Gross Margin KPI ID
@@ -18,6 +19,19 @@ def compare_gross_margins(client: BorsdataClient, inst_id: int):
     avg_3year = get_gross_margin_average(client, inst_id, 3)
     avg_5year = get_gross_margin_average(client, inst_id, 5)
     return current_gm, avg_3year, avg_5year
+
+def plot_gross_margin_comparison(client, inst_id, ax):
+    # Fetch the data (you may need to adjust this based on your actual implementation)
+    gross_margin_data = client.get_kpi_history(inst_id, kpi_id=10, report_type='year', price_type='mean')
+    
+    years = [item['y'] for item in gross_margin_data['values']]
+    gross_margin_values = [item['v'] for item in gross_margin_data['values']]
+    
+    ax.plot(years, gross_margin_values, marker='o')
+    ax.set_title('Gross Margin Over Time')
+    ax.set_xlabel('Year')
+    ax.set_ylabel('Gross Margin (%)')
+    ax.grid(True)
 
 def print_gross_margin_comparison(client: BorsdataClient, inst_id: int):
     current_gm, avg_3year, avg_5year = compare_gross_margins(client, inst_id)
