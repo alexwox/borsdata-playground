@@ -1,5 +1,5 @@
 import os
-from typing import List, Optional, Any, Dict, Tuple
+from typing import List, Optional, Any, Dict
 import requests
 from dotenv import load_dotenv
 
@@ -77,7 +77,22 @@ class BorsdataClient:
     def get_stock_prices_last(self) -> Dict[str, Any]:
         return self._get("instruments/stockprices/last")
 
-    # Add more methods for other endpoints as needed
+        
+
+    # Existing methods...
+
+    # New methods for analysis scripts
+    def get_insider_data(self, inst_id: int) -> Dict[str, Any]:
+        return self._get(f"instruments/{inst_id}/insiders")
+
+    def get_short_interest_data(self, inst_id: int) -> Dict[str, Any]:
+        return self._get(f"instruments/{inst_id}/shorts")
+
+    def get_dividend_data(self, inst_id: int) -> Dict[str, Any]:
+        return self._get(f"instruments/{inst_id}/dividends")
+
+    def get_buyback_data(self, inst_id: int) -> Dict[str, Any]:
+        return self._get(f"instruments/{inst_id}/buybacks")
 
 # Example usage
 if __name__ == "__main__":
