@@ -32,7 +32,7 @@ def plot_pe_growth_relationship(current_pe: float, stock_name: str):
     plt.figure(figsize=(12, 8))
     for r, color in zip(growth_rates, colors):
         y = calculate_y(x, r)
-        plt.plot(x, y, color=color, label=f'Growth Rate: {r:.2%}')
+        plt.plot(x, y, color=color, label=f'Discount rate: {r:.2%}')
 
     plt.axhline(y=current_pe, color='k', linestyle='--', label=f'Current P/E: {current_pe:.2f}')
 
@@ -45,8 +45,8 @@ def plot_pe_growth_relationship(current_pe: float, stock_name: str):
     plt.ylim(0, 100)
 
     # Add text annotation for the current P/E
-    intersect_x = np.interp(current_pe, calculate_y(x, 0.10), x)
-    plt.annotate(f'Current P/E: {current_pe:.2f}\nImplied Growth: {intersect_x:.2%}',
+    intersect_x = np.interp(current_pe, calculate_y(x, 0.09), x)
+    plt.annotate(f'Current P/E: {current_pe:.2f}\nImplied Growth: {(intersect_x-1):.2%}',
                  xy=(intersect_x, current_pe), xytext=(0.85, current_pe+5),
                  arrowprops=dict(facecolor='black', shrink=0.05))
 
